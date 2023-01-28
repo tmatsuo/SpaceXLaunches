@@ -13,7 +13,7 @@ let rocketNameMapping: Map<string, string> = new Map<string, string>();
 let lastFetched = Date.now() - ROCKETS_CACHE_EXPIRATION;
 
 
-export async function getRocketName(rocket_id: string): string {
+export async function getRocketName(rocket_id: string): Promise<string> {
     const now = Date.now();
     if (now > lastFetched + ROCKETS_CACHE_EXPIRATION) {
         await fetchRocketNames();
@@ -21,17 +21,18 @@ export async function getRocketName(rocket_id: string): string {
     if (!rocketNameMapping.has(rocket_id)) {
         return rocket_id;
     }
-    return rocketNameMapping.get(rocket_id);
+    return rocketNameMapping.get(rocket_id) as string;
 }
 
 /**
  * Fetches rocket names from the API and update the cache.
  */
-async function fetchRocketNames() {
-    const response = await fetch(
-	"https://api.spacexdata.com/v4/rockets");
-    const data = await response.json();
-    for (const rocket of data) {
-        rocketNameMapping.set(rocket.id, rocket.name);
-    }
+export async function fetchRocketNames() {
+  const response = await fetch(
+	  "https://api.spacexdata.com/v4/rockets");
+  const data = await response.json();
+  lastFetched = Date.now();
+  for (const rocket of data) {
+    rocketNameMapping.set(rocket.id, rocket.name);
+  }
 }

@@ -13,7 +13,7 @@ let crewNameMapping: Map<string, string> = new Map<string, string>();
 let lastFetched = Date.now() - CREW_CACHE_EXPIRATION;
 
 
-export async function getCrewName(crew_id: string): string {
+export async function getCrewName(crew_id: string): Promise<string> {
     const now = Date.now();
     if (now > lastFetched + CREW_CACHE_EXPIRATION) {
         await fetchCrewNames();
@@ -29,11 +29,12 @@ export async function getCrewName(crew_id: string): string {
  *
  * TODO: research if we need to lock and guard the map.
  */
-async function fetchCrewNames() {
-    const response = await fetch(
-	"https://api.spacexdata.com/v4/crew");
-    const data = await response.json();
-    for (const crew of data) {
-        crewNameMapping.set(crew.id, crew.name);
-    }
+export async function fetchCrewNames() {
+  const response = await fetch(
+    "https://api.spacexdata.com/v4/crew");
+  const data = await response.json();
+  lastFetched = Date.now();
+  for (const crew of data) {
+    crewNameMapping.set(crew.id, crew.name);
+  }
 }
