@@ -16,14 +16,18 @@ export interface Launch {
   rocketName: string,
   flightNumber: number,
   launchDate: string,
-  crewIds: string[], // Crew ids
   crew: string[],
   details: string, // Mission details
   rocketStatus: string
 }
 
+interface Fairings {
+  reused?: boolean,
+  recovery_attempt?: boolean,
+  recovered?: boolean,
+}
 
-function determineRocketStatus(fairings): string {
+function determineRocketStatus(fairings: Fairings|null): string {
   if (fairings?.reused === true) {
     return "Reused";
   } else if (fairings?.recovery_attempt === true) {
@@ -56,10 +60,9 @@ export async function getLaunches(): Promise<Launch[]> {
        rocketId: launch.rocket,
 	     flightNumber: launch.flight_number,
 	     launchDate: launch.date_utc,
-	     crewIds: launch.crew,
        crew: crew,
 	     details: launch.details,
-       rocketStatus: determineRocketStatus(launch.farings),
+       rocketStatus: determineRocketStatus(launch.fairings),
 	    }
 	  );
   };

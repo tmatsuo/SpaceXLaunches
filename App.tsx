@@ -18,7 +18,7 @@ import {Launch, getLaunches} from "./src/launch";
 
 function toLocalDate(date: string): string {
     const d = new Date(date);
-    return d.toString();
+    return d.toLocaleString();
 }
 
 function renderCrew(crew: string[]): string {
@@ -31,7 +31,7 @@ function renderLaunch(item: Launch|null): string {
   }
   return "Rocket id:" + item.rocketId + "\n" +
     "Rocket name: " + item.rocketName + "\n" +
-    "Mission details: " + item.details + "\n" +
+    "Mission details: " + (item.details ? item.details : "") + "\n" +
     toLocalDate(item.launchDate) + "\n" +
     "Crew: " + renderCrew(item.crew) + "\n" +
     "Rocket status: " + item.rocketStatus;
