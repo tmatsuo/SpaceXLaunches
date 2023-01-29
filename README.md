@@ -11,3 +11,9 @@ $ npm run android
 ```
 
 For both cases, you need to setup emulator or connect the actual device.
+
+To run the unit tests, run:
+
+```sh
+$ npm run test
+```
