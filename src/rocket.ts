@@ -31,8 +31,8 @@ export async function fetchRocketNames() {
   const response = await fetch(
 	  "https://api.spacexdata.com/v4/rockets");
   const data = await response.json();
-  lastFetched = Date.now();
   for (const rocket of data) {
     rocketNameMapping.set(rocket.id, rocket.name);
   }
+  lastFetched = Date.now();
 }

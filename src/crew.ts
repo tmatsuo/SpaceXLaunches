@@ -33,8 +33,8 @@ export async function fetchCrewNames() {
   const response = await fetch(
     "https://api.spacexdata.com/v4/crew");
   const data = await response.json();
-  lastFetched = Date.now();
   for (const crew of data) {
     crewNameMapping.set(crew.id, crew.name);
   }
+  lastFetched = Date.now();
 }
